@@ -5,3 +5,8 @@ initial begin
 	$display("a=%b, b=%b",a,b);
 end
 endmodule
+
+/*
+* OUTPUT:
+* a=0, b=1
+*/
