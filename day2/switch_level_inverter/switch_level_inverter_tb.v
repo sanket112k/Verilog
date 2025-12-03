@@ -13,7 +13,7 @@ end
 endmodule
 
 /*
-@time=0  in=0 out=0
+@time=0  in=0 out=1
 @time=5  in=1 out=0
 @time=10 in=x out=x
 @time=15 in=z out=x
