@@ -38,11 +38,11 @@ initial begin
 	a=1'b1;b=1'bx;#5
 	a=1'bx;b=1'b0;#5
 	a=1'bx;b=1'b1;#5
-        a=1'bx;b=1'bx;#5
+    a=1'bx;b=1'bx;#5
 	a=1'b0;b=1'bz;#5
-        a=1'b1;b=1'bz;#5
-        a=1'bz;b=1'b0;#5
-        a=1'bz;b=1'b1;#5
+    a=1'b1;b=1'bz;#5
+    a=1'bz;b=1'b0;#5
+    a=1'bz;b=1'b1;#5
 	a=1'bz;b=1'bz;#5 
 	$finish;
 end
