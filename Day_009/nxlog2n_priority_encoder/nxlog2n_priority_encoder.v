@@ -1,11 +1,17 @@
 module nxlog2n_priority_encoder #(parameter N=4)(
     input [N-1:0]in,
-    output reg [$clog2(N)-1:0]out
+    output reg [$clog2(N)-1:0]out,
+    output reg valid
 );
 integer i;
 always @(*) begin
     for(i=0;i<N;i=i+1) begin
-        if(in[i]===1'b1) begin
+        if(in==0) begin 
+            valid=0;
+            out={$clog2(N){1'bx}};
+        end
+        else if(in[i]===1'b1) begin
+            valid=1;
             out<=i;
             i<=N;
         end
