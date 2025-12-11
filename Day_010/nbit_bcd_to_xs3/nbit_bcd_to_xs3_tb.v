@@ -1,44 +1,28 @@
-i=0
-if(bcd_in[i*4 +: 4]==9) begin
-    bcd_in[(i+1)*4 +: 4] = bcd_in[(i+1)*4 +: 4] + 1;
-    bcd_in[i*4 +: 4] = 0;
-end
-else begin
-
-
-
-
-
-    if(bcd_in[(i+1)*4 +: 4]==9) begin
-
-
-
-
-/*
-module bcd_to_xs3_tb;
+module nbit_bcd_to_xs3_tb;
 parameter N=2;
+parameter B=N*$clog2(10);
 reg [N*4-1:0]bcd_in;
 wire [N*4-1:0]xs3_out;
 nbit_bcd_to_xs3 #(.N(N)) dut1(
     .bcd_in(bcd_in),
     .xs3_out(xs3_out)
 );
-integer i;
+integer i,j,k;
+reg [B+N*4:0]shift_reg;
 initial begin
-    bcd_in = {(N*4-1){1'b0}};#10
-    i=0;
-    while(i<N) begin
-        while(bcd_in[i*4 +: 4]<10) begin
-            if(bcd_in[i*4 +: 4]<10) begin
-                if(i>0&&(bcd_in[(i-1)*4 +: 4]<10)) begin
-                #10;bcd_in=bcd_in+1;
+    shift_reg=0;
+    for(k=0;k<=(2**B)-1;k=k+1) begin
+        shift_reg[B-1:0]=k;
+        for(i=0;i<B;i=i+1) begin
+            for(j=0;j<B;j=j+1) begin
+                if(shift_reg[B+j*4 +: 4]>=5)
+                    shift_reg[B+j*4 +: 4] = shift_reg[B+j*4 +: 4] + 3;
             end
-//            else begin
-//                bcd_in[i*4 +: 4]=4'd15;
-//
-//            end
+            shift_reg=shift_reg<<1;
         end
-        i=i+1;
+        if(shift_reg[B+N*4]==1) $finish;
+        bcd_in<=shift_reg[B+N*4-1:B];#10;
+        shift_reg[B+N*4:B]<=0;
     end
     $finish;
 end
@@ -46,108 +30,6 @@ initial begin
     $monitor("bcd_in=%b xs3_out=%b",bcd_in,xs3_out);
 end
 endmodule
-*/
-
-/*
-module bcd_counter(
-    input [3:0]bcd
-);
-*/
-
-/*
-module bcd_to_xs3_tb;
-parameter N=2;
-reg [N*4-1:0]bcd_in;
-wire [N*4-1:0]xs3_out;
-nbit_bcd_to_xs3 #(.N(N)) dut1(
-    .bcd_in(bcd_in),
-    .xs3_out(xs3_out)
-);
-integer i;
-initial begin
-    bcd_in = {(N*4-1){1'b0}};#10
-    i=0;
-    while(i<N) begin
-        while(bcd_in[i*4 +: 4]<15) begin
-            if(bcd_in[i*4 +: 4]<4'd9) begin
-                //bcd_in[i*4 +: 4]=bcd_in[i*4 +: 4]+4'd1;#10;
-                bcd_in=bcd_in+4'd1;#10;
-            end
-            else begin
-                bcd_in[i*4 +: 4]=4'd15;
-            end
-        end
-        i=i+1;
-    end
-    $finish;
-end
-initial begin
-    $monitor("bcd_in=%b xs3_out=%b",bcd_in,xs3_out);
-end
-endmodule
-*/
-
-
-
-
-
-
-module bcd_to_xs3_tb;
-parameter N=3;
-reg [N*4-1:0]bcd_in;
-wire [N*4-1:0]xs3_out;
-nbit_bcd_to_xs3 #(.N(N)) dut1(
-    .bcd_in(bcd_in),
-    .xs3_out(xs3_out)
-);
-integer i;
-reg [N*4-1:0]temp;
-initial begin
-    bcd_in = {(N*4-1){1'b0}};#10
-    for(i=0;i<N;i=i+1) begin
-        for(bcd_in[i*4 +: 4]=4'd1;bcd_in[i*4 +: 4]<=4'd9;bcd_in[i*4 +: 4]=bcd_in[i*4 +: 4]+4'd1)
-            #10;
-        if(bcd_in[i*4 +: 4]==4'd9) begin
-            bcd_in[i*4 +: 4] <= 4'd0;#10;
-        end
-        else begin
-            bcd_in[i*4 +: 4] <= bcd_in[i*4 +: 4]+4'd1;#10;
-        end*//*
-    end
-    $finish;
-end
-initial begin
-    $monitor("bcd_in=%b xs3_out=%b",bcd_in,xs3_out);
-end
-endmodule
-
-
-/*for(k=0;k<10;k=k+1) begin
-            bcd_in[i*4 +: 4]=k;
-            for(j=0;j<10;j=j+1) begin
-                bcd_in[(i-1)*4 +: 4]=j;#10;
-            end
-        end*/
-
-/*
-* for (int i = 0; i < N; i = i + 1) begin
-                // Get the current value of the specific BCD digit
-                reg [3:0] current_digit;
-                current_digit = temp_count[4*i + 3 : 4*i];
-
-                // If the current digit is 9, roll it over to 0 and increment the next digit (if any)
-                if (current_digit == 4'd9) begin
-                    temp_count[4*i + 3 : 4*i] <= 4'd0;
-                    // The loop continues to the next digit (i+1) for increment logic
-                end else begin
-                    // Otherwise, just increment the current digit and stop processing further digits
-                    temp_count[4*i + 3 : 4*i] <= current_digit + 4'd1;
-                    // Break the loop here to prevent simultaneous increments across digits
-                    // (Note: this loop structure needs careful consideration for synthesis,
-                    // but the logic below is more standard for synthesizable code)
-                end
-*/
-
 
 
 /*
@@ -252,5 +134,5 @@ bcd_in=10010110 xs3_out=11001001
 bcd_in=10010111 xs3_out=11001010
 bcd_in=10011000 xs3_out=11001011
 bcd_in=10011001 xs3_out=11001100
-nbit_bcd_to_xs3_tb.v:16: $finish called at 1000 (1s)
+nbit_bcd_to_xs3_tb.v:23: $finish called at 1000 (1s)
 */
