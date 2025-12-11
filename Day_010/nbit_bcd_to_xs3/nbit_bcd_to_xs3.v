@@ -5,7 +5,7 @@ module nbit_bcd_to_xs3 #(parameter N=2)(
 genvar i;
 generate
     for(i=0;i<N;i=i+1) begin
-        bcd_to_xs3_digit dut(.in(bcd_in[i*4+3 +: 4]),.out(xs3_out[i*4+3 +: 4]));
+        bcd_to_xs3_digit dut(.in(bcd_in[i*4 +: 4]),.out(xs3_out[i*4 +: 4]));
     end
 endgenerate
 endmodule

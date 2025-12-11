@@ -1,60 +1,3 @@
-i=0
-if(bcd_in[i*4 +: 4]==9) begin
-    bcd_in[(i+1)*4 +: 4] = bcd_in[(i+1)*4 +: 4] + 1;
-    bcd_in[i*4 +: 4] = 0;
-end
-else begin
-
-
-
-
-
-    if(bcd_in[(i+1)*4 +: 4]==9) begin
-
-
-
-
-/*
-module bcd_to_xs3_tb;
-parameter N=2;
-reg [N*4-1:0]bcd_in;
-wire [N*4-1:0]xs3_out;
-nbit_bcd_to_xs3 #(.N(N)) dut1(
-    .bcd_in(bcd_in),
-    .xs3_out(xs3_out)
-);
-integer i;
-initial begin
-    bcd_in = {(N*4-1){1'b0}};#10
-    i=0;
-    while(i<N) begin
-        while(bcd_in[i*4 +: 4]<10) begin
-            if(bcd_in[i*4 +: 4]<10) begin
-                if(i>0&&(bcd_in[(i-1)*4 +: 4]<10)) begin
-                #10;bcd_in=bcd_in+1;
-            end
-//            else begin
-//                bcd_in[i*4 +: 4]=4'd15;
-//
-//            end
-        end
-        i=i+1;
-    end
-    $finish;
-end
-initial begin
-    $monitor("bcd_in=%b xs3_out=%b",bcd_in,xs3_out);
-end
-endmodule
-*/
-
-/*
-module bcd_counter(
-    input [3:0]bcd
-);
-*/
-
-/*
 module bcd_to_xs3_tb;
 parameter N=2;
 reg [N*4-1:0]bcd_in;
@@ -71,10 +14,10 @@ initial begin
         while(bcd_in[i*4 +: 4]<15) begin
             if(bcd_in[i*4 +: 4]<4'd9) begin
                 //bcd_in[i*4 +: 4]=bcd_in[i*4 +: 4]+4'd1;#10;
-                bcd_in=bcd_in+4'd1;#10;
+                //bcd_in=bcd_in+4'd1;#10;
             end
             else begin
-                bcd_in[i*4 +: 4]=4'd15;
+                bcd_in[i*4 +: 4]=4'd0;
             end
         end
         i=i+1;
@@ -85,13 +28,13 @@ initial begin
     $monitor("bcd_in=%b xs3_out=%b",bcd_in,xs3_out);
 end
 endmodule
-*/
 
 
 
 
 
 
+/*
 module bcd_to_xs3_tb;
 parameter N=3;
 reg [N*4-1:0]bcd_in;
@@ -101,7 +44,10 @@ nbit_bcd_to_xs3 #(.N(N)) dut1(
     .xs3_out(xs3_out)
 );
 integer i;
+//reg [3:0]current_digit;
 reg [N*4-1:0]temp;
+//assign temp={(N*4-1){1'b0}};
+//assign bcd_in=temp;
 initial begin
     bcd_in = {(N*4-1){1'b0}};#10
     for(i=0;i<N;i=i+1) begin
@@ -120,7 +66,7 @@ initial begin
     $monitor("bcd_in=%b xs3_out=%b",bcd_in,xs3_out);
 end
 endmodule
-
+*/
 
 /*for(k=0;k<10;k=k+1) begin
             bcd_in[i*4 +: 4]=k;
