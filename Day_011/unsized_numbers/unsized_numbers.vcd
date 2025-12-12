@@ -1,0 +1,32 @@
+$date
+	Fri Dec 12 13:10:52 2025
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1s
+$end
+$scope module unsized_numbers $end
+$var integer 32 ! unsized_bi [31:0] $end
+$var integer 32 " unsized_dec [31:0] $end
+$var integer 32 # unsized_hex [31:0] $end
+$var integer 32 $ unsized_oct [31:0] $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+$end
+#0
+$dumpvars
+b10011101110001 $
+b1110101001110101 #
+b101110001111011110101001 "
+b101001 !
+$end
+#10
+b1111101100010111 #
+b101010011111110 $
+b1000 "
+b11010 !
+#20
