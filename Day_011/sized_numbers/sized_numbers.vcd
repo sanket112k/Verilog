@@ -1,0 +1,46 @@
+$date
+	Fri Dec 12 12:13:52 2025
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1s
+$end
+$scope module sized_numbers_tb $end
+$var wire 16 ! hex_output [15:0] $end
+$var wire 6 " bi_output [5:0] $end
+$var reg 6 # bi_input [5:0] $end
+$var reg 16 $ hex_input [15:0] $end
+$scope module dut $end
+$var wire 6 % bi_input [5:0] $end
+$var wire 6 & bi_output [5:0] $end
+$var wire 16 ' hex_input [15:0] $end
+$var wire 16 ( hex_output [15:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+$end
+#0
+$dumpvars
+b1110101001110101 (
+b1110101001110101 '
+b101001 &
+b101001 %
+b1110101001110101 $
+b101001 #
+b101001 "
+b1110101001110101 !
+$end
+#10
+b1111101100010111 !
+b1111101100010111 (
+b1111101100010111 $
+b1111101100010111 '
+b11010 "
+b11010 &
+b11010 #
+b11010 %
+#20
