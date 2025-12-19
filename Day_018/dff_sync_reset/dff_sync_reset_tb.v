@@ -1,0 +1,60 @@
+module dff_sync_reset_tb;
+reg clk,d,reset;
+wire q;
+dff_sync_reset dut(clk,d,reset,q);
+initial begin
+    clk = 0; d = 0; reset = 0;
+    forever #5 clk = ~clk;
+end
+initial begin
+    #5 reset = 0;
+    repeat (20) begin
+        d = $urandom_range(0,1);
+        #3;
+    end
+    $finish;
+end
+initial begin
+    reset = 0; #28;
+    reset = 1; #10;
+    reset = 0; #10;
+    reset = 1; #10;
+    reset = 0;
+end
+initial begin
+    $monitor($time," clk=%b reset=%b d=%b q=%b", clk, reset, d, q);
+    $dumpfile("dff_sync_reset.vcd");
+    $dumpvars(0,dff_sync_reset_tb);
+end
+endmodule
+
+/*
+* OUTPUT
+VCD info: dumpfile dff_sync_reset.vcd opened for output.
+                   0 clk=0 reset=0 d=0 q=x
+                   5 clk=1 reset=0 d=1 q=1
+                   8 clk=1 reset=0 d=0 q=1
+                  10 clk=0 reset=0 d=0 q=1
+                  15 clk=1 reset=0 d=0 q=0
+                  17 clk=1 reset=0 d=1 q=0
+                  20 clk=0 reset=0 d=1 q=0
+                  23 clk=0 reset=0 d=0 q=0
+                  25 clk=1 reset=0 d=0 q=0
+                  28 clk=1 reset=1 d=0 q=0
+                  29 clk=1 reset=1 d=1 q=0
+                  30 clk=0 reset=1 d=1 q=0
+                  35 clk=1 reset=1 d=1 q=0
+                  38 clk=1 reset=0 d=1 q=0
+                  40 clk=0 reset=0 d=1 q=0
+                  45 clk=1 reset=0 d=1 q=1
+                  48 clk=1 reset=1 d=1 q=1
+                  50 clk=0 reset=1 d=0 q=1
+                  55 clk=1 reset=1 d=0 q=0
+                  58 clk=1 reset=0 d=0 q=0
+                  59 clk=1 reset=0 d=1 q=0
+                  60 clk=0 reset=0 d=1 q=0
+                  62 clk=0 reset=0 d=0 q=0
+dff_sync_reset_tb.v:15: $finish called at 65 (1s)
+                  65 clk=1 reset=0 d=0 q=0
+* 
+*/
