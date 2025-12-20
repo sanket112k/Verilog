@@ -5,13 +5,6 @@ module jkff_using_sr(
 wire s,r;
 assign s = j & ~q;
 assign r = k & q;
-//srff dut1(clk, reset, s, r, q);
-//endmodule
-
-//module srff(
-//    input clk, reset, s, r,
-//    output reg q
-//);
 always @(posedge clk) begin
     if(reset) q<=0;
     else begin
