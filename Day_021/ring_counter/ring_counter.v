@@ -13,7 +13,7 @@ always @(posedge clk or negedge rstn) begin
         pout <= 1;
     end
     else begin
-        pout <= {pout[0],pout[N-1:1]};
+        pout <= {pout[N-2:0], pout[N-1]};
     end
 end
 endmodule
