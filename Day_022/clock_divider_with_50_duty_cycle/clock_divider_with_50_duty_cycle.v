@@ -10,5 +10,5 @@ always @(posedge clk_in) begin
     clk1 <= (count<N/2) ? 1'b1 : 1'b0;
 end
 always @(negedge clk_in) clk2 <= clk1;
-assign clk_out = clk1 | clk2;
+assign clk_out = (N%2) ? clk1|clk2 : clk1;
 endmodule
