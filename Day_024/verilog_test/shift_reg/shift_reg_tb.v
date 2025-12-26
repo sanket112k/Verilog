@@ -1,10 +1,11 @@
+`timescale 1ms/1ms
 module shift_reg_tb;
 reg clk, rst, shift_in;
 wire [3:0]led;
 
 shift_reg dut(clk,rst,shift_in,led);
 
-always #10 clk = ~clk;
+always #500 clk = ~clk;
 initial begin
     clk = 0;
     
