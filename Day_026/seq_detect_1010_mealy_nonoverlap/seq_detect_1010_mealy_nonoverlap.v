@@ -16,7 +16,7 @@ always @(*) begin
         A: begin next_state = in ? B : A; out = 1'b0; end
         B: begin next_state = in ? B : C; out = 1'b0; end
         C: begin next_state = in ? D : A; out = 1'b0; end
-        D: begin next_state = A; out = in ? 1'b1 : 1'b0; end
+        D: begin next_state = in ? B : A; out = in ? 1'b1 : 1'b0; end
         default: begin next_state = 3'dx; out = 1'b0; end
     endcase
 end
