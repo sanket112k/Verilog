@@ -1,7 +1,7 @@
 `timescale 1ns/1ps
 module single_port_async_read_write_ram_tb;
 wire [7:0] data;
-reg [5:0] ram_address;
+reg [7:0] ram_address;
 reg write_enable;
 reg chip_select;
 reg out_enable;
@@ -57,7 +57,6 @@ task write_operation;
         tb_data_enable = 0;
         #10;    //wait for clk
         write_enable = 0;
-        //tb_data_out = 8'bz;
         tb_data_enable = 1;
     end
 endtask
@@ -72,7 +71,6 @@ task read_operation;
         #10;    //wait for clk
         $display("read data at address %h: %h", addr, data);
         out_enable = 0;
-        //tb_data_enable = 0;
     end
 endtask
 endmodule
