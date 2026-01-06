@@ -16,15 +16,16 @@ single_port_sync_ram1 dut(
     .out_enable(out_enable)
 );
 
-reg tb_data_out;
+reg [7:0]tb_data_out;
 reg tb_data_enable;
-assign data = tb_data_out;
+assign data = tb_data_enable ? 8'bz : tb_data_out;
 always #5 clk = ~clk;
 
 initial begin
     clk = 0;
     write_enable = 0;
-    tb_data_out = 0;
+    tb_data_out = 8'bz;
+    tb_data_enable = 1;
     ram_address = 0;
     chip_select = 1;
     out_enable = 0;
@@ -60,7 +61,7 @@ task write_operation;
         tb_data_enable = 0;
         #10;    //wait for clk
         write_enable = 0;
-        tb_data_out = 8'bz;
+        //tb_data_out = 8'bz;
         tb_data_enable = 1;
     end
 endtask
@@ -73,9 +74,9 @@ task read_operation;
         out_enable = 1;
         tb_data_enable = 1;
         #10;    //wait for clk
-        $display("read data at address %h: %h", addr, tb_data_out);
+        $display("read data at address %h: %h", addr, data);
         out_enable = 0;
-        tb_data_enable = 0;
+        //tb_data_enable = 0;
     end
 endtask
 endmodule
