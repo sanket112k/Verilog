@@ -20,11 +20,25 @@ always #10 clk = ~clk;
 
 initial begin
    clk = 0;
+   tx_start = 1;
+   @(negedge tx_done);
    data = 8'hff;
-   tx_start = 1;
-   repeat(10) @(negedge clk);
-   tx_start = 1;
-   if (rx_done) #20 $finish;
+   @(negedge tx_done);
+   data = 8'h00;
+   @(negedge tx_done);
+   data = 8'h55;
+   @(negedge tx_done);
+   data = 8'h99;
+   @(negedge tx_done);
+   data = 8'h01;
+   @(negedge tx_done);
+   data = 8'h10;
+   @(negedge tx_done);
+   data = 8'h08;
+   @(negedge tx_done);
+   data = 8'h80;
+   @(negedge tx_done);
+   #100 $finish;
 end
 
 initial begin

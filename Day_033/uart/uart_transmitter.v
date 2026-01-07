@@ -6,8 +6,8 @@ module uart_transmitter(
     output tx_done      // Transmission complete
 );
 
-parameter CLK_FREQ = 50_000_000;  // 50 MHz
-parameter BAUD_RATE = 9600;       // Baud rate
+parameter CLK_FREQ = 50_000_000;
+parameter BAUD_RATE = 9600;
 localparam BIT_TIME = CLK_FREQ / BAUD_RATE;
 
 reg [2:0] state = 0;
@@ -29,14 +29,15 @@ always @(posedge clk) begin
         IDLE: begin  // Idle bit (1)
             tx_out <= 1;  // High when idle
             if (tx_start) begin
-                shift_reg <= {p_bit, data};
                 state <= START;
                 count <= 0;
             end
         end
         START: begin  // Start bit (0)
             tx_out <= 0;
+            i <= 0;
             if (count == BIT_TIME - 1) begin
+                shift_reg <= {data, p_bit};
                 count <= 0;
                 state <= DATA;
             end else count <= count + 1;
@@ -52,6 +53,7 @@ always @(posedge clk) begin
         end
         STOP: begin  // Stop bit (1)
             tx_out <= 1;
+            i <= 0;
             if (count == BIT_TIME - 1) begin
                 count <= 0;
                 state <= IDLE;

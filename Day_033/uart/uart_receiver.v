@@ -9,7 +9,7 @@ parameter CLK_FREQ = 50_000_000;
 parameter BAUD_RATE = 9600;
 parameter BIT_TIME = CLK_FREQ / BAUD_RATE;
 
-reg [2:0] state = 0, next;
+reg [2:0] state = 0, next = 0;
 reg [7:0] out_reg;
 reg odd_reset;
 wire odd;
@@ -45,7 +45,7 @@ always @(posedge clk) begin
         end
         
         START: begin
-            if (count == (BIT_TIME/2) - 1) begin    //Half bit time
+            if (count == BIT_TIME - 1) begin    //Half bit time
                 state <= next;
                 count <= 0;
             end
@@ -85,7 +85,7 @@ always @(posedge clk) begin             // reset parity check
 	endcase
 end
 
-assign rx_done = ((state == STOP) && odd);     //process complete indicator
+assign rx_done = ((state == STOP) /*&& odd*/);     //process complete indicator
 assign data = (rx_done) ? out_reg : 8'b0;          //output
 
 endmodule
