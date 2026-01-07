@@ -38,7 +38,7 @@ initial begin
    @(negedge tx_done);
    data = 8'h80;
    @(negedge tx_done);
-   #100 $finish;
+   #100_000 $finish;
 end
 
 initial begin
