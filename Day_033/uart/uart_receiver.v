@@ -11,8 +11,8 @@ parameter BIT_TIME = CLK_FREQ / BAUD_RATE;
 
 reg [2:0] state = 0, next = 0;
 reg [7:0] out_reg;
-reg odd_reset;
-wire odd;
+//reg odd_reset;
+reg data_valid;
 reg [3:0] i = 0;
 reg [15:0] count = 0;
 parameter [2:0] IDLE = 3'd0,
@@ -38,70 +38,42 @@ end
 /************************************************************************************/
 
 always @(posedge clk) begin
-    case (state)
-        IDLE: begin
+    if (state == IDLE) begin
+        state <= next;
+        count <= 0;
+    end
+    else if (state >= START && state <= STOP) begin 
+        if (count == BIT_TIME - 1) begin
             state <= next;
             count <= 0;
+        end else begin
+            count <= count + 1;
         end
-        
-        START: begin
-            if (count == BIT_TIME - 1) begin    //Half bit time
-                state <= next;
-                count <= 0;
-            end
-            else count <= count + 1;
-            i <= 0;
-        end
+    end
+    else begin 
+        state <= IDLE;
+        count <= 0;
+    end
+end
 
-        DATA: begin
-            if (count == BIT_TIME -1) begin         //Full bit time
-                state <= next;
-                out_reg[i] <= rx_in;                //Store rx_in in reg for every iteration
-                i <= i + 1;
-                count <= 0;
-            end
-            else count <= count + 1;
-        end
-
-        default: begin
-            if (count == BIT_TIME -1) begin
-                state <= next;
-                count <= 0;
-            end
-            else count <= count + 1;
-        end
+always @(posedge clk) begin
+    case(state)
+        DATA : if (count == BIT_TIME/2 -1) out_reg[i] <= rx_in;
+        CHECK: if (count == BIT_TIME/2 -1) data_valid <= ^out_reg^rx_in;
     endcase
 end
 
 /**************************************************************************/
 
-parity dut(clk, odd_reset, rx_in, odd);
-
-always @(posedge clk) begin             // reset parity check
-	case(next)
-		IDLE : odd_reset <= 1;	
-		STOP : odd_reset <= 1;
-		default : odd_reset <= 0;
-	endcase
+always @(posedge clk) begin
+    case(state)
+        START: i <= 0;
+        DATA : if (count == BIT_TIME -1) i <= i + 1;
+        default: i <= 0;
+    endcase
 end
 
-assign rx_done = ((state == STOP) /*&& odd*/);     //process complete indicator
+assign rx_done = ((state == STOP) && data_valid);     //process complete indicator
 assign data = (rx_done) ? out_reg : 8'b0;          //output
 
 endmodule
-
-
-
-
-module parity (
-    input clk,
-    input odd_reset,
-    input rx_in,
-    output reg odd
-);
-always @(posedge clk) begin
-    if (odd_reset) odd <= 0;
-    else if (rx_in) odd <= ~odd;
-end
-endmodule
-

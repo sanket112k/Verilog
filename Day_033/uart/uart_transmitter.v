@@ -27,7 +27,7 @@ assign p_bit = ~(^data);
 always @(posedge clk) begin
     case (state)
         IDLE: begin  // Idle bit (1)
-            tx_out <= 1;  // High when idle
+            tx_out <= 1;  
             if (tx_start) begin
                 state <= START;
                 count <= 0;
@@ -37,7 +37,7 @@ always @(posedge clk) begin
             tx_out <= 0;
             i <= 0;
             if (count == BIT_TIME - 1) begin
-                shift_reg <= {data, p_bit};
+                shift_reg <= {p_bit, data};
                 count <= 0;
                 state <= DATA;
             end else count <= count + 1;
@@ -61,5 +61,5 @@ always @(posedge clk) begin
         end
     endcase
 end
-assign tx_done = (state == IDLE);
+assign tx_done = (state == STOP);
 endmodule

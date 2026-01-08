@@ -21,7 +21,6 @@ always #10 clk = ~clk;
 initial begin
    clk = 0;
    tx_start = 1;
-   @(negedge tx_done);
    data = 8'hff;
    @(negedge tx_done);
    data = 8'h00;
