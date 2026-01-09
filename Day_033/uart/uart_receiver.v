@@ -11,7 +11,6 @@ parameter BIT_TIME = CLK_FREQ / BAUD_RATE;
 
 reg [2:0] state = 0, next = 0;
 reg [7:0] out_reg;
-//reg odd_reset;
 reg data_valid;
 reg [3:0] i = 0;
 reg [15:0] count = 0;
@@ -58,7 +57,7 @@ end
 
 always @(posedge clk) begin
     case(state)
-        DATA : if (count == BIT_TIME/2 -1) out_reg[i] <= rx_in;
+        DATA : if (count == BIT_TIME/2 -1) out_reg[i] <= rx_in;     //Sampling at half bit time
         CHECK: if (count == BIT_TIME/2 -1) data_valid <= ^out_reg^rx_in;
     endcase
 end
