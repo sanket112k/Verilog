@@ -5,7 +5,7 @@ module mod_n_counter #(parameter N=4)(
     
 initial count = 0;
 always @(posedge clk) begin
-    if(reset || count==N-1) count = 0;
+    if (reset || count == N-1) count = 0;
     else count = count + 1'b1;
 end
 endmodule
