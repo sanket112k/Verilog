@@ -16,7 +16,7 @@ always @ (posedge clk) begin:Memory_write
 end
 
 always @ (posedge clk) begin:Memory_read
-    if(chip_select && out_enable && !write_enable) data_reg = ram_memory[ram_address];
+    if(chip_select && !write_enable) data_reg = ram_memory[ram_address];
 end
 
 assign data = (chip_select && out_enable && !write_enable) ? data_reg : 8'bz;
